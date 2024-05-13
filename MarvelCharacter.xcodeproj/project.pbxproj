@@ -45,7 +45,7 @@
 		D4AF6C162BF183320001A20B /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF6C152BF183320001A20B /* FavoritesViewController.swift */; };
 		D4AF6C182BF183CC0001A20B /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF6C172BF183CC0001A20B /* FavoritesViewModel.swift */; };
 		D4AF6C1B2BF188080001A20B /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AF6C1A2BF188080001A20B /* FavoritesView.swift */; };
-		D4DA83C52BE2AA8B00B9088F /* CharacterListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA83C42BE2AA8B00B9088F /* CharacterListCell.swift */; };
+		D4DA83C52BE2AA8B00B9088F /* CharacterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA83C42BE2AA8B00B9088F /* CharacterCell.swift */; };
 		D4DA83C82BE2ACE900B9088F /* UICardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA83C72BE2ACE900B9088F /* UICardView.swift */; };
 		D4DA83CB2BE2AD0D00B9088F /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA83CA2BE2AD0D00B9088F /* UIView+Extension.swift */; };
 		D4DA83FC2BE2BCF600B9088F /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DA83FB2BE2BCF600B9088F /* UIColor+Extensions.swift */; };
@@ -104,7 +104,7 @@
 		D4AF6C152BF183320001A20B /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		D4AF6C172BF183CC0001A20B /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		D4AF6C1A2BF188080001A20B /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
-		D4DA83C42BE2AA8B00B9088F /* CharacterListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListCell.swift; sourceTree = "<group>"; };
+		D4DA83C42BE2AA8B00B9088F /* CharacterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCell.swift; sourceTree = "<group>"; };
 		D4DA83C72BE2ACE900B9088F /* UICardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICardView.swift; sourceTree = "<group>"; };
 		D4DA83CA2BE2AD0D00B9088F /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		D4DA83FB2BE2BCF600B9088F /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -179,7 +179,6 @@
 		D4242B062BE1B96300217E0B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D4DA83C42BE2AA8B00B9088F /* CharacterListCell.swift */,
 				D4242B022BE1AAC000217E0B /* CharacterView.swift */,
 			);
 			path = View;
@@ -285,9 +284,9 @@
 		D4AF6C142BF182A80001A20B /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
-				D4AF6C192BF187E70001A20B /* View */,
 				D4AF6C152BF183320001A20B /* FavoritesViewController.swift */,
 				D4AF6C172BF183CC0001A20B /* FavoritesViewModel.swift */,
+				D4AF6C192BF187E70001A20B /* View */,
 			);
 			path = Favorites;
 			sourceTree = "<group>";
@@ -314,13 +313,14 @@
 		D4DA83C62BE2ACDF00B9088F /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D44354062BEF0D1E00327231 /* LoveButton */,
-				D44354072BEF0D4300327231 /* ShareButton */,
-				D44353F72BEADD9300327231 /* Error */,
+				D4DA83C42BE2AA8B00B9088F /* CharacterCell.swift */,
 				D4242B042BE1AB1C00217E0B /* ViewCoding.swift */,
 				D4DA83C72BE2ACE900B9088F /* UICardView.swift */,
 				D416A9C02BE2EBF600449C5E /* UICircularView.swift */,
 				D416A9C62BE2F6AB00449C5E /* EmptyAgentView.swift */,
+				D44354062BEF0D1E00327231 /* LoveButton */,
+				D44354072BEF0D4300327231 /* ShareButton */,
+				D44353F72BEADD9300327231 /* Error */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -472,7 +472,7 @@
 				D44354002BEEAA1000327231 /* CharacterDetailsViewController.swift in Sources */,
 				D416A9C52BE2EC3400449C5E /* UIHeartButton.swift in Sources */,
 				D44353FD2BEAE71700327231 /* ErrorViewController.swift in Sources */,
-				D4DA83C52BE2AA8B00B9088F /* CharacterListCell.swift in Sources */,
+				D4DA83C52BE2AA8B00B9088F /* CharacterCell.swift in Sources */,
 				D416A9C72BE2F6AB00449C5E /* EmptyAgentView.swift in Sources */,
 				D4DA83CB2BE2AD0D00B9088F /* UIView+Extension.swift in Sources */,
 				D43935272BE41E30005C147D /* String+Extension.swift in Sources */,

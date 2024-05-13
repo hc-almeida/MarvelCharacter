@@ -9,6 +9,9 @@ import Foundation
 import CommonCrypto
 
 extension String {
+    
+    static let empty: String = String()
+    
     var md5: String {
         let messageData = data(using:.utf8)!
         var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))

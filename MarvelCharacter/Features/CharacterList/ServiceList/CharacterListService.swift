@@ -46,7 +46,6 @@ final class CharacterListService: CharacterListServiceProtocol {
     
     func fetchSearchCharacter(name: String, offset: Int, completion: @escaping (Result<CharacterData, NetworkError>) -> Void) {
         let request = MarvelCharacterRequest(offset: offset, nameStartsWith: name)
-        print(":::: request 2 \(request)")
         
         service.request(request) { (result: Result<CharacterResponse, NetworkError>) in
             switch result {

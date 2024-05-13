@@ -28,7 +28,6 @@ class FavoriteManager {
         do {
             let favoriteCharacters = try AppDelegate.sharedAppDelegate.coreDataStack.context.fetch(fetchRequest)
             return favoriteCharacters.map { favoriteCharacter in
-                print(" getFavorites 2 \(favoriteCharacter.name)")
                 return Character(id: Int(favoriteCharacter.id),
                                  name: favoriteCharacter.name ?? "",
                                  description: favoriteCharacter.text ?? "", 
@@ -53,7 +52,6 @@ class FavoriteManager {
         favoriteCharacter.imagePath = imagePath
         favoriteCharacter.name = name
         favoriteCharacter.text = text
-        print(" addToFavorites 2 \(favoriteCharacter)")
         AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
     }
 
@@ -63,7 +61,6 @@ class FavoriteManager {
 
         let context = AppDelegate.sharedAppDelegate.coreDataStack.context
         if let result = try? context.fetch(fetchRequest), let objectToDelete = result.first {
-            print(" removeFromFavorites \(objectToDelete)")
             context.delete(objectToDelete)
             AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
         }

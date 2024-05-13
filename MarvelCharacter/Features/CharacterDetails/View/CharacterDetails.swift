@@ -74,6 +74,8 @@ final class CharacterDetails: UIView {
         return button
     }()
     
+    // MARK: - Public Properties
+    
     var imageShare: UIImage?
     var character: Character?
     weak var delegate: CharacterDetailsDelegate?
@@ -88,6 +90,8 @@ final class CharacterDetails: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Public Methods
     
     func configure(with data: Character) {
         character = data
@@ -104,11 +108,15 @@ final class CharacterDetails: UIView {
         treatImageToShare(image: thumbnail)
     }
     
-    @objc func didTapShare() {
+    // MARK: - Private Methods
+    
+    @objc 
+    private func didTapShare() {
         delegate?.shareImage(of: imageShare)
     }
     
-    @objc func didTapLoveItButton() {
+    @objc 
+    private func didTapLoveItButton() {
         loveItButton.toggleIt()
         let value = loveItButton.isFilled
         delegate?.didTapFavorite(at: character?.id ?? 0, value: value)
@@ -176,6 +184,5 @@ extension CharacterDetails: ViewCoding {
     
     func setupConfigurations() {
         backgroundColor = .white
-        shareButton.addTarget(self, action: #selector(didTapShare), for: .touchUpInside)
     }
 }

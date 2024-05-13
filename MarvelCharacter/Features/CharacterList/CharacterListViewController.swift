@@ -36,6 +36,8 @@ class CharacterListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Lifecycle
+    
     override func loadView() {
         super.loadView()
         self.customView = CharacterView()
@@ -63,7 +65,6 @@ class CharacterListViewController: UIViewController {
         searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "search", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray.withAlphaComponent(0.6)])
         searchController.searchBar.searchTextField.leftView?.tintColor = .black
         searchController.obscuresBackgroundDuringPresentation = false
-        
         navigationItem.searchController = searchController
     }
 }

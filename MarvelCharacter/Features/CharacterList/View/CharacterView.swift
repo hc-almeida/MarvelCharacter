@@ -42,8 +42,13 @@ final class CharacterView: UIView {
         return element
     }()
     
+    // MARK: - Public Properties
+    
     var characterList: [Character] = []
     weak var delegate: CharacterViewDelegate?
+    
+    // MARK: - Private Properties
+    
     private var isFirsCharactersLoad: Bool = true
     
     // MARK: - Inits
@@ -117,7 +122,7 @@ extension CharacterView: ViewCoding {
     func setupConfigurations() {
         backgroundColor = .white
         emptyListView.isHidden = true
-        collectionView.register(CharacterListCell.self, forCellWithReuseIdentifier: CharacterListCell.identifier)
+        collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: CharacterCell.identifier)
     }
 }
 
@@ -138,7 +143,7 @@ extension CharacterView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterListCell.identifier, for: indexPath) as? CharacterListCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.identifier, for: indexPath) as? CharacterCell else { return UICollectionViewCell() }
         
         var isFavorite = false
         
@@ -176,9 +181,9 @@ extension CharacterView: UICollectionViewDataSource, UICollectionViewDelegate {
     }
 }
 
-// MARK: - CharacterListCellDelegate
+// MARK: - CharacterCellDelegate
 
-extension CharacterView: CharacterListCellDelegate {
+extension CharacterView: CharacterCellDelegate {
 
     func didTapFavorite(at id: Int, value: Bool) {
         delegate?.didTapFavorite(at: id, value: value)

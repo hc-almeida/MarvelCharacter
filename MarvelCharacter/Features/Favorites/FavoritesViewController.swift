@@ -18,9 +18,7 @@ class FavoritesViewController: UIViewController {
     // MARK: - Public Method
     
     var customView: FavoritesView?
-    var characterList: [Character] = []
     var viewModel: FavoritesViewModelProtocol
-    private var searchTask: DispatchWorkItem?
 
     // MARK: - Inits
     
@@ -33,6 +31,8 @@ class FavoritesViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Lifecycle
+    
     override func loadView() {
         super.loadView()
         self.customView = FavoritesView()
@@ -40,15 +40,13 @@ class FavoritesViewController: UIViewController {
         self.view = customView
     }
     
-    // MARK: - View Lifecycle
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchFavorites()
     }
 }
 
-// MARK: - CharacterListViewControllerProtocol
+// MARK: - FavoritesViewControllerProtocol
 
 extension FavoritesViewController: FavoritesViewControllerProtocol {
    
@@ -76,7 +74,7 @@ extension FavoritesViewController: FavoritesViewControllerProtocol {
     }
 }
 
-// MARK: - CharacterViewDelegate
+// MARK: - FavoritesViewDelegate
 
 extension FavoritesViewController: FavoritesViewDelegate {
    

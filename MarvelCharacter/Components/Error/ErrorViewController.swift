@@ -41,6 +41,8 @@ final class ErrorViewController: UIViewController {
         return nil
     }
     
+    // MARK: - View Lifecycle
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)

@@ -13,7 +13,6 @@ protocol CharacterDetailsViewModelProtocol {
     func toggleFavorite(id: Int, isFavorite: Bool)
 }
 
-
 final class CharacterDetailsViewModel: CharacterDetailsViewModelProtocol {
     
     var character: Character?
@@ -25,8 +24,12 @@ final class CharacterDetailsViewModel: CharacterDetailsViewModelProtocol {
         self.character = character
     }
     
+    // MARK: - Public Methods
+    
     func showCharacterDetails() {
-        guard let character = character else { return }
+        guard var character = character else { return }
+        character.isFavorite = isFavorite(id: character.id)
+        
         viewController?.displayCharacter(data: character)
     }
     
@@ -38,6 +41,12 @@ final class CharacterDetailsViewModel: CharacterDetailsViewModelProtocol {
         } else {
             removeFromFavorites(id: id)
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func isFavorite(id: Int) -> Bool {
+        FavoriteManager.shared.isFavorite(id: Int64(id))
     }
     
     private func addToFavorites(id: Int, isFavorite: Bool) {

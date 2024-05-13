@@ -1,5 +1,5 @@
 //
-//  CharacterListCell.swift
+//  CharacterCell.swift
 //  MarvelCharacter
 //
 //  Created by Hellen Caroline  on 01/05/24.
@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-protocol CharacterListCellDelegate: AnyObject {
+protocol CharacterCellDelegate: AnyObject {
     func didTapFavorite(at id: Int, value: Bool)
 }
 
-class CharacterListCell: UICollectionViewCell {
+class CharacterCell: UICollectionViewCell {
     
     // MARK: - User Interface Components
     
@@ -32,7 +32,7 @@ class CharacterListCell: UICollectionViewCell {
     
     private lazy var blurImage: UIImageView = {
         let blurImage = UIImageView()
-        blurImage.backgroundColor = .green
+        blurImage.backgroundColor = .systemGray
         blurImage.addBlurToView(style: .light)
         blurImage.translatesAutoresizingMaskIntoConstraints = false
         return blurImage
@@ -42,7 +42,7 @@ class CharacterListCell: UICollectionViewCell {
         let image = UIImageView()
         image.layer.cornerRadius = 4
         image.clipsToBounds = true
-        image.backgroundColor = .yellow
+        image.backgroundColor = .systemGroupedBackground
         image.contentMode = .scaleAspectFill
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -76,8 +76,8 @@ class CharacterListCell: UICollectionViewCell {
     // MARK: - Public Properties
     
     var characterId: Int = 0
-    weak var delegate: CharacterListCellDelegate?
-    static let identifier = String(describing: CharacterListCell.self)
+    weak var delegate: CharacterCellDelegate?
+    static let identifier = String(describing: CharacterCell.self)
     
     // MARK: - Inits
     
@@ -101,11 +101,11 @@ class CharacterListCell: UICollectionViewCell {
         characterId = data.id
         loveItButton.isFilled = isFavorite
         let url = data.thumbnail?.url ?? data.urlImage
-        DispatchQueue.main.async {
-            self.image.addImageFromURL(url: url ?? "")
-            self.blurImage.addImageFromURL(url: url ?? "")
-        }
+        image.addImageFromURL(url: url ?? .empty)
+        blurImage.addImageFromURL(url: url ?? .empty)
     }
+    
+    // MARK: - Private Methods
     
     @objc
     func didTapLoveItButton() {
@@ -113,8 +113,6 @@ class CharacterListCell: UICollectionViewCell {
         let value = loveItButton.isFilled
         delegate?.didTapFavorite(at: characterId, value: value)
     }
-    
-    // MARK: - Private Methods
     
     private func clear() {
         blurImage.image = nil
@@ -126,7 +124,7 @@ class CharacterListCell: UICollectionViewCell {
 
 // MARK: - ViewCoding
 
-extension CharacterListCell: ViewCoding {
+extension CharacterCell: ViewCoding {
  
     func setupHierarchy() {
         addSubview(containerView)

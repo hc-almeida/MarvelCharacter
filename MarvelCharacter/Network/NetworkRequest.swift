@@ -32,8 +32,6 @@ extension NetworkRequest {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
         
-        print(":::: request \(request)")
-        
         return request
     }
 }

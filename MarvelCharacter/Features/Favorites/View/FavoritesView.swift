@@ -15,6 +15,8 @@ protocol FavoritesViewDelegate: AnyObject {
 
 final class FavoritesView: UIView {
     
+    // MARK: - User Interface Components
+    
     private lazy var collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
         viewLayout.sectionInset = .init(top: 32, left: 0, bottom: 16, right: 0)
@@ -31,8 +33,15 @@ final class FavoritesView: UIView {
         return element
     }()
 
+    // MARK: - Public Properties
+    
     weak var delegate: FavoritesViewDelegate?
+    
+    // MARK: - Private Properties
+    
     private var favoriteCharacters: [Character] = []
+    
+    // MARK: - Inits
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,17 +52,15 @@ final class FavoritesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public Methods
+    
     func configure(_ viewModel: [Character]) {
         favoriteCharacters = viewModel
         collectionView.reloadData()
     }
-    
-    public func reloadData() {
-        collectionView.reloadData()
-    }
 }
 
-// MARK: - ViewCodeProtocol
+// MARK: - ViewCoding
 
 extension FavoritesView: ViewCoding {
     
@@ -72,7 +79,7 @@ extension FavoritesView: ViewCoding {
     
     func setupConfigurations() {
         backgroundColor = .white
-        collectionView.register(CharacterListCell.self, forCellWithReuseIdentifier: CharacterListCell.identifier)
+        collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: CharacterCell.identifier)
     }
 }
 
@@ -90,7 +97,7 @@ extension FavoritesView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterListCell.identifier, for: indexPath) as? CharacterListCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.identifier, for: indexPath) as? CharacterCell else { return UICollectionViewCell() }
         
         var isFavorite = false
         
@@ -105,12 +112,11 @@ extension FavoritesView: UICollectionViewDataSource, UICollectionViewDelegate {
     }
 }
 
-// MARK: - FavoritesCellDelegate
+// MARK: - CharacterCellDelegate
 
-extension FavoritesView: CharacterListCellDelegate {
+extension FavoritesView: CharacterCellDelegate {
 
     func didTapFavorite(at id: Int, value: Bool) {
         delegate?.didTapFavorite(at: id, value: value)
     }
 }
-

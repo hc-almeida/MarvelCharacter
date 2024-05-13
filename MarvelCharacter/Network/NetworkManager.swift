@@ -36,10 +36,14 @@ final class NetworkManager: NetworkManagerProtocol {
         
         urlSession.loadData(with: request) { data, response, error in
             if let error = error {
-                completion(.failure(.unownedError))
+                if let nsError = error as? NSError, nsError.domain == NSURLErrorDomain {
+                    completion(.failure(NetworkError.errorConnection))
+                } else {
+                    completion(.failure(.unownedError))
+                }
                 return
             }
-            #warning("verificar todos esses tratamentos de erro, principalmente internet")
+      
             guard let response = response as? HTTPURLResponse else {
                 completion(.failure(NetworkError.invalidResponse))
                 return
