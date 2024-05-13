@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-//var DataModel = [Character(id: 0, name: "teste", description: "dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf dfsdfdfsfsfsf", thumbnail: nil)]
-
 protocol CharacterViewDelegate: AnyObject {
     func fetchCharacterNextPage()
     func didTapCharacter(at index: Int)
+    func didTapFavorite(at id: Int, value: Bool)
+    func isFavorite(id: Int) -> Bool
 }
 
 final class CharacterView: UIView {
@@ -22,7 +22,7 @@ final class CharacterView: UIView {
     private lazy var emptyListView: EmptyAgentView = {
         let view = EmptyAgentView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
+        view.backgroundColor = .white
         return view
     }()
     
@@ -70,11 +70,11 @@ final class CharacterView: UIView {
         }
         
         characterList.append(contentsOf: characters)
-        
         collectionView.performBatchUpdates({
             collectionView.insertItems(at: indexPaths)
         })
         
+        setCollectionHidden(characterList.isEmpty)
     }
     
     func reloadCharacters(_ characters: [Character], animated: Bool) {
@@ -84,7 +84,11 @@ final class CharacterView: UIView {
             collectionView.reloadData()
         }
     }
-            
+    
+    private func setCollectionHidden(_ hidden: Bool) {
+        emptyListView.isHidden = !hidden
+        collectionView.isHidden = hidden
+    }
 }
 
 // MARK: - ViewCoding
@@ -92,11 +96,17 @@ final class CharacterView: UIView {
 extension CharacterView: ViewCoding {
   
     func setupHierarchy() {
+        addSubview(emptyListView)
         addSubview(collectionView)
     }
 
     func setupConstraints() {
         NSLayoutConstraint.activate([
+            emptyListView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            emptyListView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            emptyListView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            emptyListView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -32),
+            
             collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
@@ -106,9 +116,9 @@ extension CharacterView: ViewCoding {
     
     func setupConfigurations() {
         backgroundColor = .white
+        emptyListView.isHidden = true
         collectionView.register(CharacterListCell.self, forCellWithReuseIdentifier: CharacterListCell.identifier)
     }
-    
 }
 
 // MARK: - UITableViewDelegate & UITableViewDataSource
@@ -116,12 +126,12 @@ extension CharacterView: ViewCoding {
 extension CharacterView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if !isFirsCharactersLoad && characterList.isEmpty {
-            collectionView.setupEmptyView()
-        } else {
-            collectionView.removeBackGroundView()
-        }
+//
+//        if !isFirsCharactersLoad && characterList.isEmpty {
+//            collectionView.setupEmptyView()
+//        } else {
+//            collectionView.removeBackGroundView()
+//        }
 
         return characterList.count
     }
@@ -129,8 +139,14 @@ extension CharacterView: UICollectionViewDataSource, UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterListCell.identifier, for: indexPath) as? CharacterListCell else { return UICollectionViewCell() }
+        
+        var isFavorite = false
+        
+        if let value = delegate?.isFavorite(id: characterList[indexPath.row].id) {
+            isFavorite = value
+        }
 
-        cell.configureCell(with: characterList[indexPath.row])
+        cell.configureCell(with: characterList[indexPath.row], isFavorite: isFavorite)
         cell.delegate = self
         
         return cell
@@ -163,8 +179,8 @@ extension CharacterView: UICollectionViewDataSource, UICollectionViewDelegate {
 // MARK: - CharacterListCellDelegate
 
 extension CharacterView: CharacterListCellDelegate {
-    
+
     func didTapFavorite(at id: Int, value: Bool) {
-        print("favorite")
+        delegate?.didTapFavorite(at: id, value: value)
     }
 }

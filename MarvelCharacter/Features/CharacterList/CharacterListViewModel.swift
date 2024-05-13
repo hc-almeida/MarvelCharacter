@@ -9,13 +9,14 @@ import Foundation
 
 protocol CharacterListViewModelProtocol {
     var characters: [Character] { get }
-    var section: CharacterListSection { get set }
     func reset()
     func fetchCharacters()
-    func fetchCharactersList()
     func fetchCharacterNextPage()
     func searchCharacter(with name: String)
     func selectCharacter(index: Int)
+    func reloadCharacters(animated: Bool)
+    func isFavorite(id: Int) -> Bool
+    func toggleFavorite(id: Int, isFavorite: Bool)
 }
 
 class CharacterListViewModel: CharacterListViewModelProtocol {
@@ -30,7 +31,6 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
     
     var isSearching: Bool = false
     var characters = [Character]()
-    var section: CharacterListSection = .characters
     weak var viewController: CharacterListViewControllerProtocol?
 
     // MARK: - Init
@@ -41,15 +41,22 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
     
     // MARK: - Public Methods
     
-    func fetchCharactersList() {
-        switch section {
-        case .favorites: 
-            fetchFavorites()
-        case .characters:
-            fetchCharacters()
+    func fetchCharacters() {
+        viewController?.displayLoading()
+        
+        service.fetchCharacterList(offset: currentPage * pageCount) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.totalCount = response.total
+                let characters = response.results
+                self?.characters.append(contentsOf: characters)
+                self?.viewController?.displayCharacters(characters)
+            case .failure(let failure):
+                self?.presentError(error: failure)
+            }
         }
     }
-    
+
     func fetchCharacterNextPage() {
         guard shouldFetchNewPage() else { return }
         currentPage += 1
@@ -71,10 +78,24 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
     
     func selectCharacter(index: Int) {
         let character = characters[index]
-//        let character = DataModel[index]
         viewController?.proceedToDetails(data: character)
     }
     
+    func isFavorite(id: Int) -> Bool {
+        FavoriteManager.shared.isFavorite(id: Int64(id))
+    }
+    
+    func toggleFavorite(id: Int, isFavorite: Bool) {
+        guard let index = characters.firstIndex(where: { $0.id == id }) else { return }
+        characters[index].isFavorite = isFavorite
+        
+        if isFavorite {
+            addToFavorites(id: id, isFavorite: isFavorite)
+        } else {
+            removeFromFavorites(id: id)
+        }
+    }
+            
     func reset() {
         currentPage = 0
         totalCount = 0
@@ -82,29 +103,6 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
         searchText = ""
         isSearching = false
         reloadCharacters(animated: true)
-    }
-    
-    func fetchFavorites() {
-        characters = []
-        
-        characters.append(contentsOf: characters)
-        viewController?.displayCharacters(characters)
-    }
-    
-    func fetchCharacters() {
-        viewController?.displayLoading()
-        
-        service.fetchCharacterList(offset: currentPage * pageCount) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.totalCount = response.total
-                let characters = response.results
-                self?.characters.append(contentsOf: characters)
-                self?.viewController?.displayCharacters(characters)
-            case .failure(let failure):
-                self?.presentError(error: failure)
-            }
-        }
     }
     
     // MARK: - Private Methods
@@ -136,5 +134,19 @@ class CharacterListViewModel: CharacterListViewModelProtocol {
         } else {
             self.viewController?.displayError(type: .generic)
         }
+    }
+    
+    private func addToFavorites(id: Int, isFavorite: Bool) {
+        guard var character = characters.first(where: { $0.id == id }) else { return }
+        FavoriteManager.shared.addToFavorites(
+            id: Int64(character.id),
+            imagePath: character.thumbnail?.url,
+            name: character.name,
+            text: character.description
+        )
+    }
+
+    private func removeFromFavorites(id: Int) {
+        FavoriteManager.shared.removeFromFavorites(id: Int64(id))
     }
 }

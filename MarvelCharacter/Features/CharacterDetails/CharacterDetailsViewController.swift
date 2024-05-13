@@ -55,13 +55,14 @@ extension CharacterDetailsViewController: CharacterDetailsViewControllerProtocol
 // MARK: - CharacterDetailsDelegate
 
 extension CharacterDetailsViewController: CharacterDetailsDelegate {
-   
+  
+    func didTapFavorite(at id: Int, value: Bool) {
+        viewModel.toggleFavorite(id: id, isFavorite: value)
+    }
+    
     func shareImage(of character: UIImage?) {
-        print("teste \(character)")
-        
         let items = [character]
-        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        let ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
         present(ac, animated: true)
-
     }
 }

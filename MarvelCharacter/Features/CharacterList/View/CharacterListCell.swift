@@ -96,14 +96,14 @@ class CharacterListCell: UICollectionViewCell {
     
     // MARK: - Public Methods
     
-    func configureCell(with data: Character) {
+    func configureCell(with data: Character, isFavorite: Bool) {
         name.text = data.name
         characterId = data.id
-        loveItButton.isFilled = data.isFavorite ?? false
-        
+        loveItButton.isFilled = isFavorite
+        let url = data.thumbnail?.url ?? data.urlImage
         DispatchQueue.main.async {
-            self.image.addImageFromURL(url: data.thumbnail?.url ?? "")
-            self.blurImage.addImageFromURL(url: data.thumbnail?.url ?? "")
+            self.image.addImageFromURL(url: url ?? "")
+            self.blurImage.addImageFromURL(url: url ?? "")
         }
     }
     

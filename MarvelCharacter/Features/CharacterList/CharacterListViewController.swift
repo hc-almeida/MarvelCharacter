@@ -12,8 +12,8 @@ protocol CharacterListViewControllerProtocol: AnyObject {
     func displayCharacterSearch(_ data: [Character])
     func displayError(type: ErrorBuild.ErrorType)
     func reloadCharacters(_ characters: [Character], animated: Bool)
-    func displayLoading()
     func proceedToDetails(data: Character)
+    func displayLoading()
 }
 
 class CharacterListViewController: UIViewController {
@@ -49,7 +49,6 @@ class CharacterListViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.reset()
         viewModel.fetchCharacters()
-        segmentedControll()
         setupSearchBar()
     }
     
@@ -67,25 +66,6 @@ class CharacterListViewController: UIViewController {
         
         navigationItem.searchController = searchController
     }
-    
-    private func segmentedControll() {
-        let sections = ["Characters", "Favorites"]
-        
-        let segmentedControl = UISegmentedControl(items: sections)
-        segmentedControl.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.selectedSegmentTintColor = .black
-        segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-        self.navigationItem.titleView = segmentedControl
-    }
-
-    @objc
-    func indexChanged(_ segmentedControl: UISegmentedControl) {
-        guard let section = CharacterListSection(rawValue: segmentedControl.selectedSegmentIndex) else { return }
-        viewModel.section = section
-        viewModel.fetchCharactersList()
-        print(section)
-    }
 }
 
 // MARK: - CharacterListViewControllerProtocol
@@ -100,11 +80,7 @@ extension CharacterListViewController: CharacterListViewControllerProtocol {
         stopLoading()
         customView?.configure(with: data)
     }
-    
-    func displayLoading() {
-        startLoading()
-    }
-    
+        
     func displayCharacters(_ data: [Character]) {
         stopLoading()
         customView?.configure(with: data)
@@ -115,7 +91,6 @@ extension CharacterListViewController: CharacterListViewControllerProtocol {
         let viewController = CharacterDetailsViewController(viewModel: viewModel)
         viewModel.viewController = viewController
         present(viewController, animated: true)
-//        navigationController?.pushViewController(viewController, animated: true)
     }
     
     func displayError(type: ErrorBuild.ErrorType) {
@@ -131,18 +106,30 @@ extension CharacterListViewController: CharacterListViewControllerProtocol {
             self.present(controller, animated: true)
         }
     }
+    
+    func displayLoading() {
+        startLoading()
+    }
 }
 
 // MARK: - CharacterViewDelegate
 
 extension CharacterListViewController: CharacterViewDelegate {
   
+    func isFavorite(id: Int) -> Bool {
+        viewModel.isFavorite(id: id)
+    }
+
     func didTapCharacter(at index: Int) {
         viewModel.selectCharacter(index: index)
     }
 
     func fetchCharacterNextPage() {
         viewModel.fetchCharacterNextPage()
+    }
+    
+    func didTapFavorite(at id: Int, value: Bool) {
+        viewModel.toggleFavorite(id: id, isFavorite: value)
     }
 }
 

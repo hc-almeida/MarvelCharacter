@@ -21,12 +21,18 @@ struct CharacterData: Decodable {
     let results: [Character]
 }
 
-struct Character: Decodable {
+struct Character: Decodable, Equatable {
+    
     var id: Int
     let name: String
     let description: String
-    let thumbnail: CharacterImage?
+    var thumbnail: CharacterImage? = nil
+    var urlImage: String? = nil
     var isFavorite: Bool? = false
+    
+    static func == (lhs: Character, rhs: Character) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 struct CharacterImage: Decodable {

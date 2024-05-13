@@ -18,16 +18,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
         guard let ws = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: ws)
+//        window = UIWindow(windowScene: ws)
         
-        let service = CharacterListService()
-        let viewModel = CharacterListViewModel(service: service)
-        let viewController = CharacterListViewController(viewModel: viewModel)
-        viewModel.viewController = viewController
+        let window = UIWindow(windowScene: ws)
         
-        let nav = UINavigationController(rootViewController: viewController)
-        window?.rootViewController = nav
-        window?.makeKeyAndVisible()
+//        let service = CharacterListService()
+//        let viewModel = CharacterListViewModel(service: service)
+//        let viewController = CharacterListViewController(viewModel: viewModel)
+//        viewModel.viewController = viewController
+        
+//        let nav = UINavigationController(rootViewController: MainNavigationController())
+//        window?.rootViewController = nav
+//        window?.makeKeyAndVisible()
+        
+        let tabBarController = MainTabBarController()
+        let navigation = UINavigationController(rootViewController: tabBarController)
+        window.rootViewController = navigation
+        self.window = window
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -56,6 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
     }
 
 

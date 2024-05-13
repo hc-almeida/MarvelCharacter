@@ -10,6 +10,7 @@ import UIKit
 
 protocol CharacterDetailsDelegate: AnyObject {
     func shareImage(of character: UIImage?)
+    func didTapFavorite(at id: Int, value: Bool)
 }
 
 final class CharacterDetails: UIView {
@@ -74,6 +75,7 @@ final class CharacterDetails: UIView {
     }()
     
     var imageShare: UIImage?
+    var character: Character?
     weak var delegate: CharacterDetailsDelegate?
     
     // MARK: - Inits
@@ -88,9 +90,11 @@ final class CharacterDetails: UIView {
     }
     
     func configure(with data: Character) {
+        character = data
         thumbnail.addImageFromURL(url: data.thumbnail?.url ?? "")
         name.text = data.name
-        
+        loveItButton.isFilled = data.isFavorite ?? false
+      
         if data.description.isEmpty {
             characterDescription.text = "Não há descrição oficial"
             return
@@ -105,7 +109,9 @@ final class CharacterDetails: UIView {
     }
     
     @objc func didTapLoveItButton() {
-        delegate?.shareImage(of: imageShare)
+        loveItButton.toggleIt()
+        let value = loveItButton.isFilled
+        delegate?.didTapFavorite(at: character?.id ?? 0, value: value)
     }
     
     private func treatImageToShare(image: UIImageView) {
