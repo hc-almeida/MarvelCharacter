@@ -1,6 +1,15 @@
 # Projeto Marvel Characters
 Este repositório contém uma aplicação iOS para exibir uma lista de personagens da Marvel e seus detalhes. A aplicação permite buscar personagens por nome, visualizar detalhes e marcar personagens como favoritos. Os dados são consumidos da API da Marvel que fazendo um GET para o endpoint `https://gateway.marvel.com/v1/public/characters + apiKey` retorna um payload com array de Character. Esse array é usado para popular a view que pertence a CharacterListViewController. 
 
+<img width="469" alt="Captura de Tela 2024-05-14 às 01 08 33" src="https://github.com/hc-almeida/MarvelCharacter/assets/54284757/5c494abd-4ef3-44e1-812a-7b31093260ae">
+<img width="469" alt="Captura de Tela 2024-05-14 às 01 08 38" src="https://github.com/hc-almeida/MarvelCharacter/assets/54284757/615631c9-69f1-4f99-a17a-678d576b9996">
+<img width="469" alt="Captura de Tela 2024-05-14 às 01 09 07" src="https://github.com/hc-almeida/MarvelCharacter/assets/54284757/b7108dcd-2a14-4fc2-b463-571f04f340ed">
+<img width="469" alt="Captura de Tela 2024-05-14 às 01 09 24" src="https://github.com/hc-almeida/MarvelCharacter/assets/54284757/959d3849-7243-42b1-a030-35f42fd4f6a3">
+
+
+
+
+
 # Como Executar o Projeto
 Para executar o projeto, siga estas etapas:
 
