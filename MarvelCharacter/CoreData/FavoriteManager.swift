@@ -7,7 +7,14 @@
 
 import CoreData
 
-class FavoriteManager {
+protocol FavoriteManagerProtocol {
+    func getFavorites() -> [Character]
+    func isFavorite(id: Int64) -> Bool
+    func removeFromFavorites(id: Int64)
+    func addToFavorites(id: Int64, imagePath: String?, name: String?, text: String?)
+}
+
+class FavoriteManager: FavoriteManagerProtocol {
    
     static let shared = FavoriteManager()
     private init() {}

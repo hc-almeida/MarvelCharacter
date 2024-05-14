@@ -65,6 +65,7 @@ extension CharacterDetailsViewController: CharacterDetailsDelegate {
     func shareImage(of character: UIImage?) {
         let items = [character]
         let ac = UIActivityViewController(activityItems: items as [Any], applicationActivities: nil)
+        ac.popoverPresentationController?.sourceView = self.view
         present(ac, animated: true)
     }
 }

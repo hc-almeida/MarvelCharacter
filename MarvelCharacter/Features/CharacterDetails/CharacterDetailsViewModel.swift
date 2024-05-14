@@ -60,7 +60,7 @@ final class CharacterDetailsViewModel: CharacterDetailsViewModelProtocol {
             )
         }
     }
-
+    
     private func removeFromFavorites(id: Int) {
         FavoriteManager.shared.removeFromFavorites(id: Int64(id))
     }

@@ -105,14 +105,13 @@ final class CharacterDetails: UIView {
         }
         
         characterDescription.text = data.description
-        treatImageToShare(image: thumbnail)
     }
     
     // MARK: - Private Methods
     
     @objc 
     private func didTapShare() {
-        delegate?.shareImage(of: imageShare)
+        delegate?.shareImage(of: thumbnail.image)
     }
     
     @objc 
@@ -120,12 +119,6 @@ final class CharacterDetails: UIView {
         loveItButton.toggleIt()
         let value = loveItButton.isFilled
         delegate?.didTapFavorite(at: character?.id ?? 0, value: value)
-    }
-    
-    private func treatImageToShare(image: UIImageView) {
-        if let thumbnailImage = thumbnail.image {
-            imageShare = thumbnailImage
-        }
     }
 }
 
